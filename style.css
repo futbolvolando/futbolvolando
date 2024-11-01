@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url(https://cdn.discordapp.com/attachments/1111836810172170290/1301977441086078986/921283-1920x1080-desktop-1080p-logo-barcelona-background-image.jpg?ex=6726707b&is=67251efb&hm=27bbfa89bfe3ac77178991f4e9dc3c0b58b4acc7646cc414ad6539af25206bfa);
+    margin: 0;
+    padding: 0;
+    opacity: initial;
+    color: #ffffff;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgb(255, 255, 255);
+}
+h1 {
+    text-align: center;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+img {
+    width: 100px;
+    height: auto;
+    margin-right: 15px;
+}
+a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+a:hover {
+    text-decoration: underline;
+}
