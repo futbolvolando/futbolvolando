@@ -16,13 +16,13 @@
         width: 100vw; /* Asegura que el fondo cubra todo el ancho */
         }
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 10px;
             border-radius: 100px;
-            box-shadow: #007bff;
+            box-shadow: #000000;
             border-style: ridge;
-            color: #a7a7a7;
+            color: #000000;
             background-color: rgba(0, 0, 0, 0.342);
         }
         h1 {
@@ -37,10 +37,10 @@
         li {
             display: flex;
             align-items: center;
-            border-inline-end: #007bff;
+            border-inline-end: #000000;
             margin-bottom: 15px;
             color: #ffffff;
-            box-shadow: #007bff;
+            box-shadow: #000000;
         }
         img {
             width: 100px;
@@ -49,7 +49,7 @@
         }
         a {
             text-decoration: none;
-            color: #007bff;
+            color: #000000;
             font-weight: bold;
         }
         a:hover {
@@ -68,38 +68,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-            
-            margin: 0;
-            padding: 0;
-            color: #a7a7a7;
-        }
-        ul {
-            list-style-type: none;
-            padding: 100px;
-        }
-        li {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            box-shadow: #007bff;
-        }
-        img {
-            width: 100px;
-            height: auto;
-            margin-right: 15px;
-        }
-        .play-button {
-            margin-left: 15px;
-        }
-        a {
-            text-decoration: none;
-            color: #ffffff;
-            font-weight: bold;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #000000;
+    background-color: #222; /* Fondo oscuro para contraste */
+}
+
+/* Lista */
+ul {
+    list-style-type: none;
+    padding: 50px; /* Espacio alrededor de la lista */
+    margin: 0;
+}
+
+/* Elemento de lista */
+li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Distribuye imagen, texto y botón */
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #007bff;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Imagen en la lista */
+img {
+    width: 100px;
+    height: auto;
+    margin-right: 15px;
+    border-radius: 5px;
+}
+
+/* Contenedor de texto */
+.text-content {
+    flex: 1;
+    color: #ffffff;
+    font-size: 1.2em; /* Ajuste del tamaño de fuente */
+    line-height: 1.5em; /* Espaciado entre líneas para mejor legibilidad
+}
+
+/* Botón de reproducción */
+.play-button {
+    margin-left: 15px;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
     </style>
 </head>
 </html>
@@ -109,43 +133,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-            
-            margin: 0;
-            padding: 0;
-            color: #a7a7a7;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-        display: flex;
-        align-items: left; /* Cambiado a 'flex-start' para alineación a la izquierda */
-         margin-bottom: 100px;
-    
-        border: 2px solid rgb(159, 159, 159); /* Agregado 'border' para que se muestre el color del borde */
-        border-radius: 50px;
-        padding: 2%;
-        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.5); /* Cambiado 'box-shadow' para que tenga un efecto visible */
-        }
-        img {
-            width: 100px;
-            height: auto;
-            margin-right: 15px;
-        }
-        .play-button {
-            margin-left: 15px;
-        }
-        a {
-            text-decoration: none;
-            color: #007bff;
-            font-weight: bold;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
+ body {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #a7a7a7;
+    background-image: url('https://wallpapers.com/images/hd/laemocion-se-desata-en-un-estadio-de-futbol-9q0xpsk8h6ng2afe.jpg'); /* Fondo en 1080p */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* Lista */
+ul {
+    list-style-type: none;
+    padding: 300px; /* Reducir el padding de la lista */
+    margin: 0;
+}
+
+/* Elemento de lista */
+li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px; /* Reducir padding interno */
+    margin-bottom: 3000px; /* Reducir el espacio entre los elementos de la lista */
+    border: 3px solid #000000;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.357);
+}
+
+/* Imagen en la lista */
+img {
+    width: 80px; /* Tamaño reducido de la imagen */
+    height: auto;
+    margin-right: 10px; /* Reducir margen derecho */
+    border-radius: 5px;
+}
+
+/* Contenedor de texto */
+.text-content {
+    flex: 100;
+    color: #000000;
+    font-size: 100.1em; /* Ajustar tamaño de fuente */
+    line-height: 101.4em; /* Reducir espacio entre líneas */
+}
+
+/* Botón de reproducción */
+.play-button {
+    margin-left: 100px; /* Reducir margen izquierdo del botón */
+}
+
+a {
+    text-decoration: none;
+    color: #000000;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
     </style>
 </head>
 <body>
@@ -174,7 +222,7 @@
             
             margin: 0;
             padding: 0;
-            color: #a7a7a7;
+            color: #000000;
         }
         ul {
             list-style-type: none;
@@ -229,7 +277,7 @@
             
             margin: 0;
             padding: 0;
-            color: #a7a7a7;
+            color: #000000;
         }
         ul {
             list-style-type: none;
