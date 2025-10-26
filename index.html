@@ -5,204 +5,406 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fútbol Volando 97</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
         body {
-            font-family: 'Arial Black', sans-serif;
+            margin: 0;
+            font-family: 'Bebas Neue', sans-serif;
+            background: url('https://universidadeuropea.com/resources/media/images/scouting-futbol-1200x630.original.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Cambiado de height a min-height */
-            width: 100%;
-            overflow-y: auto; /* Permite desplazamiento vertical */
-            background: url('https://wallpapers.com/images/hd/cool-soccer-desktop-blue-red-white-npz7kj8t2x9v8a7p.jpg') no-repeat center center/cover;
-            animation: fadeIn 2s ease-in-out;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .container {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 700px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 255, 0, 0.5);
+            backdrop-filter: blur(12px);
         }
         h1 {
-            font-size: 30px;
-            color: white;
-            background: linear-gradient(45deg, #130057, #900101);
-            padding: 15px 40px;
-            border-radius: 50px;
-            text-transform: uppercase;
-            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
-            border: 5px solid #004D98;
-            text-align: center;
+            font-size: 3.5em;
+            color: #00ff00;
+            text-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
         }
-        .menu {
-            width: 90%;
-            max-width: 450px;
-            background: rgba(0, 166, 255, 0.9);
-            padding: 20px;
-            border-style: groove;
-            border-color: #900101;
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        input {
+            padding: 15px;
+            width: 100%;
+            border: 3px solid #00ff00;
             border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
-            animation: slideIn 1.5s ease-in-out;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        input:focus {
+            outline: none;
+            border-color: #ffcc00;
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+        }
+        button {
+            padding: 15px;
+            width: 100%;
+            background: linear-gradient(45deg, #00ff00, #00cc00);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.4em;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        button:hover:not(:disabled) {
+            background: linear-gradient(45deg, #00cc00, #009900);
+            transform: scale(1.05);
+        }
+        .error {
+            color: #ff3333;
+            font-size: 1.1em;
+            margin-top: 15px;
+            display: none;
+            text-shadow: 0 0 5px rgba(255, 51, 51, 0.7);
+        }
+        .streaming-links {
+            display: none;
+            margin-top: 30px;
         }
         .menu-item {
-            margin-bottom: 10px;
+            margin: 20px 0;
         }
         .menu-button {
+            background: linear-gradient(45deg, #ffcc00, #ff6600);
+            padding: 15px;
+            font-size: 1.5em;
             width: 100%;
-            background: #5202ff;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 12px;
-            border-style: groove;
-            border-radius: 50px;
-            cursor: pointer;
-            text-align: left;
-            transition: background 0.3s;
+            border-radius: 10px;
+            color: #000;
+            text-transform: uppercase;
+            transition: background 0.3s, transform 0.3s;
+            position: relative;
+            overflow: hidden;
         }
         .menu-button:hover {
-            background: #ffffff4a;
+            background: linear-gradient(45deg, #ff9900, #ff3300);
+            transform: scale(1.03);
+        }
+        .menu-button::before {
+            content: '⚽';
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            opacity: 0;
+            transition: left 0.3s, opacity 0.3s;
+        }
+        .menu-button:hover::before {
+            left: 10px;
+            opacity: 1;
         }
         .submenu {
             display: none;
-            padding: 12px;
-            background: #ffffffa6;
-            border-radius: 30px;
-            border-style: groove;
-            border-color: #900101;
-            margin-top: 5px;
+            margin-top: 15px;
+            padding: 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            background-size: cover;
+            background-position: center;
         }
+        .submenu.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        /* Fondos temáticos para cada submenú */
+        #submenu-0 { background: url('https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?q=80&w=2070&auto=format&fit=crop') no-repeat center center; background-size: cover; }
+        #submenu-1 { background: url('https://images.unsplash.com/photo-1518135715627-2db07a0f4a2e?q=80&w=2070&auto=format&fit=crop') no-repeat center center; background-size: cover; }
+        #submenu-2 { background: url('https://images.unsplash.com/photo-1549893338-4566a5739e9e?q=80&w=2070&auto=format&fit=crop') no-repeat center center; background-size: cover; }
+        #submenu-3 { background: url('https://images.unsplash.com/photo-1551966775-a4ddc8df0528?q=80&w=2070&auto=format&fit=crop') no-repeat center center; background-size: cover; }
+        #submenu-4 { background: url('https://images.unsplash.com/photo-1518602164571-f2a03d46db23?q=80&w=2070&auto=format&fit=crop') no-repeat center center; background-size: cover; }
+        #submenu-5 { background: url('https://images.unsplash.com/photo-1516321318428-b4f4f9b7e6f8?q=80&w=2070&auto=format&fit=crop') no-repeat center center; background-size: cover; }
+        #submenu-6 { background: url('https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=2070&auto=format&fit=crop') no-repeat center center; background-size: cover; }
         .submenu a {
             display: flex;
             align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            color: #ffcc00;
             text-decoration: none;
-            color: #A50044;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 6px 0;
+            font-size: 1.2em;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .submenu a:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 255, 0, 0.7);
+            background: rgba(255, 255, 255, 0.3);
+            color: #ffee66;
+        }
+        .submenu a::before {
+            content: '▶';
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1em;
+            opacity: 0;
+            transition: left 0.3s, opacity 0.3s;
+        }
+        .submenu a:hover::before {
+            left: 10px;
+            opacity: 1;
         }
         .submenu img {
-            width: 30px;
-            height: 30px;
+            width: 50px;
+            height: 50px;
             margin-right: 15px;
+            border-radius: 8px;
+            border: 2px solid #00ff00;
         }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            body {
-                padding: 20px;
-            }
+        .logout-btn {
+            background: linear-gradient(45deg, #ff3333, #cc0000);
+            margin-top: 20px;
+        }
+        .logout-btn:hover {
+            background: linear-gradient(45deg, #cc0000, #990000);
+        }
+        @media (max-width: 600px) {
             h1 {
-                font-size: 24px;
-                padding: 10px 20px;
+                font-size: 2.5em;
             }
-            .menu {
-                width: 95%;
-                max-width: 550px;
-                padding: 15px;
+            .container {
+                padding: 25px;
             }
             .menu-button {
-                font-size: 16px;
-                padding: 10px;
+                font-size: 1.2em;
             }
             .submenu a {
-                font-size: 14px;
+                font-size: 1em;
+            }
+            .submenu img {
+                width: 40px;
+                height: 40px;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Fútbol Volando 97</h1>
-    <div class="menu">
-        <div class="menu-item">
-            <button class="menu-button" onclick="toggleMenu(0)">- VAMOS+ -</button>
-            <div class="submenu">
-                <a href="https://tinyurl.com/28nyhk6y" target="_blank"><img src="https://acortar.link/4uNP2X" alt="">#Vamos Opción 1</a>
-                <a href="https://tinyurl.com/2dl4cxsu" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/ficha_m/VAMOSD.png" alt="">#Vamos Opción 2</a>
+    <div class="container">
+        <h1>Fútbol Volando 97</h1>
+        <div id="auth-section">
+            <input type="text" id="username" placeholder="Usuario" />
+            <input type="password" id="password" placeholder="Contraseña" />
+            <button id="login-btn" onclick="checkCredentials()">¡Entrar al Estadio!</button>
+            <p class="error" id="error-message"></p>
+        </div>
+        <div class="streaming-links" id="links-section">
+            <div class="menu">
+                <div class="menu-item">
+                    <button class="menu-button" onclick="toggleMenu(0)">- VAMOS+ -</button>
+                    <div class="submenu" id="submenu-0">
+                        <a href="https://tinyurl.com/28nyhk6y" target="_blank"><img src="https://acortar.link/4uNP2X" alt="">#Vamos Opción 1</a>
+                        <a href="https://tinyurl.com/2dl4cxsu" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/ficha_m/VAMOSD.png" alt="">#Vamos Opción 2</a>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <button class="menu-button" onclick="toggleMenu(1)">- LA LIGA TV BAR -</button>
+                    <div class="submenu" id="submenu-1">
+                        <a href="acestream://94d34491106e00394835c8cb68aa94481339b53f" target="_blank"><img src="https://acortar.link/0sBDwp" alt="">La Liga TV Bar Opción 1</a>
+                        <a href="acestream://608b0faf7d3d25f6fe5dba13d5e4b4142949990e" target="_blank"><img src="https://acortar.link/0sBDwp" alt="">La Liga TV Bar Opción 2</a>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <button class="menu-button" onclick="toggleMenu(2)">- MOVISTAR LA LIGA -</button>
+                    <div class="submenu" id="submenu-2">
+                        <a href="acestream://107c3ce5a5d2527c9f06e4eab87477201791f231" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/MLIGA.png" alt="">Movistar LaLiga Opción 1</a>
+                        <a href="acestream://d2ddf9802ccfdc456f872eea4d24596880a638a0" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/MLIGA.png" alt="">Movistar LaLiga Opción 2</a>
+                        <a href="acestream://00c9bc9c5d7d87680a5a6bed349edfa775a89947" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/MLIGA.png" alt="">Movistar LaLiga Opción 3</a>
+                        <a href="acestream://c9321006921967d6258df6945f1d598a5c0cbf1e" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/MLIGA.png" alt="">Movistar LaLiga Opción 4</a>
+                        <a href="acestream://4b528d10eaad747ddf52251206177573ee3e9f74" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/MLIGA.png" alt="">Movistar LaLiga Opción 5</a>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <button class="menu-button" onclick="toggleMenu(3)">- DAZN LALIGA -</button>
+                    <div class="submenu" id="submenu-3">
+                        <a href="acestream://e2b8a4aba2f4ea3dd68992fcdb65c9e62d910b05" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/DAZNLI.png" alt="">Dazn LaLiga Opción 1</a>
+                        <a href="acestream://74defb8f4ed3a917fd07c21b34f43c17107ec618" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/DAZNLI.png" alt="">Dazn LaLiga Opción 2</a>
+                        <a href="acestream://4e6d9cf7d177366045d33cd8311d8b1d7f4bed1f" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/DAZNLI.png" alt="">Dazn LaLiga Opción 3</a>
+                        <a href="acestream://0e50439e68aa2435b38f0563bb2f2e98f32ff4b1" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/DAZNLI.png" alt="">Dazn LaLiga Opción 4</a>
+                        <a href="acestream://1bb5bf76fb2018d6db9aaa29b1467ecdfabe2884" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/DAZNLI.png" alt="">Dazn LaLiga Opción 5</a>
+                        <a href="acestream://e2b8a4aba2f4ea3dd68992fcdb65c9e62d910b05" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/DAZNLI.png" alt="">Dazn LaLiga Opción 6</a>
+                        <a href="acestream://74defb8f4ed3a917fd07c21b34f43c17107ec618" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/DAZNLI.png" alt="">Dazn LaLiga Opción 7</a>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <button class="menu-button" onclick="toggleMenu(4)">- MOVISTAR LIGA DE CAMPEONES -</button>
+                    <div class="submenu" id="submenu-4">
+                        <a href="acestream://97df5b7824948972d041d8ca2a4d29c90b641bc9" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar Liga de Campeones Opción 1</a>
+                        <a href="acestream://0f7842f8b6c26571e5a974407b61623e56e6a052" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar Liga de Campeones Opción 2</a>
+                        <a href="acestream://f3eea003e23f94dc2d527306de9dd386e3ebf4ba" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar Liga de Campeones Opción 3</a>
+                        <a href="acestream://e7d8cae7f693fe46e89bbf74820caac9ffb32a30" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar Liga de Campeones 2 Opción 1</a>
+                        <a href="acestream://2b5129adc57d43790634d796fe3468b9fd061259" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar Liga de Campeones 3 Opción 1</a>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <button class="menu-button" onclick="toggleMenu(5)">- MOVISTAR DEPORTES Y PLUS -</button>
+                    <div class="submenu" id="submenu-5">
+                        <a href="acestream://335646e7394ea4eda343c95e57852bb70fc4178f" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Movistar_Plus%2B_2022_logo.svg/2560px-Movistar_Plus%2B_2022_logo.svg.png" alt="">Movistar Plus Opción 2</a>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <button class="menu-button" onclick="toggleMenu(6)">- DAZN Y DAZN F1 -</button>
+                    <div class="submenu" id="submenu-6">
+                        <a href="acestream://d6281d4e6310269b416180442a470d23a4a99dc9" target="_blank"><img src="https://imgs.search.brave.com/6id69MQN9FwW6QAbMGKTZe2L1wHS1lza1Zkeksi26M4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy83/LzcwL0RBWk5fRjFf/bG9nby5wbmc" alt="">Dazn F1 Opción 2</a>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
             </div>
         </div>
-        <div class="menu-item">
-            <button class="menu-button" onclick="toggleMenu(1)">- LA LIGA TV BAR -</button>
-            <div class="submenu">
-                <a href="https://tinyurl.com/22o274v6" target="_blank"><img src="https://acortar.link/0sBDwp" alt="">La liga TV Bar Opción 1</a>
-                <a href="acestream://94d34491106e00394835c8cb68aa94481339b53f" target="_blank"><img src="https://acortar.link/0sBDwp" alt="">La liga TV Bar Opción 2</a>
-                <a href="acestream://608b0faf7d3d25f6fe5dba13d5e4b4142949990e" target="_blank"><img src="https://acortar.link/0sBDwp" alt="">La liga TV Bar Opción 3</a>
-            </div>
-        </div>
-        <div class="menu-item">
-            <button class="menu-button" onclick="toggleMenu(2)">- MOVISTAR LA LIGA -</button>
-            <div class="submenu">
-                <a href="acestream://00c9bc9c5d7d87680a5a6bed349edfa775a89947" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/MLIGA.png" alt="">Movistar LaLiga Opción 1</a>
-                <a href="acestream://c9321006921967d6258df6945f1d598a5c0cbf1e" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/MLIGA.png" alt="">Movistar LaLiga Opción 2</a>
-                 <a href="acestream://4b528d10eaad747ddf52251206177573ee3e9f74" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/MLIGA.png" alt="">Movistar LaLiga Opción 3</a>
-            </div>
-        </div>
-        <div class="menu-item">
-          <button class="menu-button" onclick="toggleMenu(3)">- DAZN LALIGA -</button>
-          <div class="submenu">
-              <a href="acestream://e2b8a4aba2f4ea3dd68992fcdb65c9e62d910b05" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/DAZNLI.png" alt="">Dazn La Liga Opción 1 </a>
-              <a href="acestream://74defb8f4ed3a917fd07c21b34f43c17107ec618" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/DAZNLI.png" alt="">Dazn La Liga Opción 2</a>
-              <a href="acestream://4e6d9cf7d177366045d33cd8311d8b1d7f4bed1f" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/DAZNLI.png" alt="">Dazn La Liga Opción 3</a>
-          </div>
-      </div>
-      <div class="menu-item">
-        <button class="menu-button" onclick="toggleMenu(4)">- MOVISTAR LIGA DE CAMPEONES -</button>
-        <div class="submenu">
-            <a href="https://tinyurl.com/2akahfgs" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar liga de campeones Opción 1 </a>
-            <a href="acestream://c9c6e562d63019f283415540827c7bce5704f54d" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar liga de campeones Opción 2 </a>
-            <a href="acestream://0a26e20f39845e928411e09a124374fccb6e1478" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar liga de campeones Opción 2</a>
-            <a href="acestream://1d79a7543d691666135669f89f3541f54e2dd0a9" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar liga de campeones Opción 3</a>
-            <a href="https://tinyurl.com/2cqb7oco" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar liga de campeones Opción 4</a>
-            <a href="https://tinyurl.com/2akahfgs" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar liga de campeones 2 Opcion 1 </a>
-            <a href="acestream://e42984ac6529407462f92201af95c01db8988368" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar liga de campeones 3 Opcion 1 </a>
-            <a href="acestream://01152274037c5f7155489e0a977cbde71a61290c" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar liga de campeones 4 Opcion 1 </a>
-            <a href="acestream://cc910aee690f70190b04920d61e39da5a6d0a057" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar liga de campeones 5 Opcion 1 </a>
-            <a href="acestream://a5fab130ebf491c04d8c0dcd2adce9babcd39e69" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar liga de campeones 6 Opcion 1 </a>
-            <a href="acestream://1987ec4c561f7e47a1d02a8de1665f71934406b3" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar liga de campeones 7 Opcion 1 </a>
-            <a href="acestream://834ffb208d132aeb78c4b13209af71be7ec578c6" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar liga de campeones 8 Opcion 1 </a>
-            <a href="acestream://6d69b67507dda888dadb5ea9df951249b73ca00c" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CHAPIO.png" alt="">Movistar liga de campeones 9 Opcion 1 </a>
-        </div>
     </div>
-    <div class="menu-item">
-        <button class="menu-button" onclick="toggleMenu(5)">- MOVISTAR DEPORTES Y PLUS -</button>
-        <div class="submenu">
-            <a href="https://tinyurl.com/2yd2h4u9" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Movistar_Plus%2B_2022_logo.svg/2560px-Movistar_Plus%2B_2022_logo.svg.png" alt="">Movistar Plus </a>
-            <a href="acestream://335646e7394ea4eda343c95e57852bb70fc4178f" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Movistar_Plus%2B_2022_logo.svg/2560px-Movistar_Plus%2B_2022_logo.svg.png" alt="">Movistar Plus Opción 2 </a>
-            <a href="https://tinyurl.com/2y5ypzm4" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CPDEP.png" alt="">Movistar Deportes 1 </a>
-            <a href="https://tinyurl.com/2y322z2g" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CPDEP.png" alt="">Movistar Deportes 2 </a>
-            <a href="https://tinyurl.com/222ehmqp" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CPDEP.png" alt="">Movistar Deportes 3</a>
-            <a href="https://tinyurl.com/2blnfvkj" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CPDEP.png" alt="">Movistar Deportes 4</a>
-            <a href="https://tinyurl.com/24hd4mqm" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CPDEP.png" alt="">Movistar Deportes 5</a>
-            <a href="https://tinyurl.com/28mjy4uo" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CPDEP.png" alt="">Movistar Deportes 6</a>
-            <a href="https://tinyurl.com/24zdjeog" target="_blank"><img src="https://www.movistarplus.es/recorte/m-NEO/canal/CPDEP.png" alt="">Movistar Deportes 7</a>
-        </div>
-    </div>
-    <div class="menu-item">
-        <button class="menu-button" onclick="toggleMenu(6)">- DAZN Y DZAN F1 -</button>
-        <div class="submenu">
-            <a href="https://tinyurl.com/ywp2ebve" target="_blank"><img src="https://imgs.search.brave.com/c4G2cziZrhcgQQ3ZxrbZw7CRddkaOcZt59GuNLhYVDw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/ZG93bmxvYWQub3Jn/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDE5/LzAzL2Rhem4tbG9n/by0wLTEucG5n" alt="">Dazn 1 </a>
-            <a href="https://tinyurl.com/25v3d7e3" target="_blank"><img src="https://imgs.search.brave.com/c4G2cziZrhcgQQ3ZxrbZw7CRddkaOcZt59GuNLhYVDw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/ZG93bmxvYWQub3Jn/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDE5/LzAzL2Rhem4tbG9n/by0wLTEucG5n" alt="">Dazn 2 </a>
-            <a href="https://tinyurl.com/2b8a8lvj" target="_blank"><img src="https://imgs.search.brave.com/c4G2cziZrhcgQQ3ZxrbZw7CRddkaOcZt59GuNLhYVDw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/ZG93bmxvYWQub3Jn/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDE5/LzAzL2Rhem4tbG9n/by0wLTEucG5n" alt="">Dazn 3</a>
-            <a href="https://tinyurl.com/2dyqfmjc" target="_blank"><img src="https://imgs.search.brave.com/c4G2cziZrhcgQQ3ZxrbZw7CRddkaOcZt59GuNLhYVDw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/ZG93bmxvYWQub3Jn/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDE5/LzAzL2Rhem4tbG9n/by0wLTEucG5n" alt="">Dazn 4</a>
-            <a href="acestream://968627d24eec1c16b51d88e4a4a6c02211e3346e" target="_blank"><img src="https://imgs.search.brave.com/6id69MQN9FwW6QAbMGKTZe2L1wHS1lza1Zkeksi26M4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy83/LzcwL0RBWk5fRjFf/bG9nby5wbmc" alt="">Dazn F1 Opción 1</a>
-            <a href="acestream://d6281d4e6310269b416180442a470d23a4a99dc9" target="_blank"><img src="https://imgs.search.brave.com/6id69MQN9FwW6QAbMGKTZe2L1wHS1lza1Zkeksi26M4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy83/LzcwL0RBWk5fRjFf/bG9nby5wbmc" alt="">Dazn F1 Opción 2</a>
-        </div>
-    </div>
-
 
     <script>
-        function toggleMenu(index) {
-            let submenus = document.querySelectorAll('.submenu');
-            submenus.forEach((submenu, i) => {
-                if (i === index) {
-                    submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+        // Lista de usuarios y contraseñas válidos
+        const VALID_USERS = {
+            "josepj97": "castuera01",
+            "manolillo": "golazo123",
+            "campeon456": "liga789",
+            "partido789": "cancha101",
+            "barca": "messi10"
+        };
+
+        const authSection = document.getElementById("auth-section");
+        const linksSection = document.getElementById("links-section");
+        const errorMessage = document.getElementById("error-message");
+        const usernameInput = document.getElementById("username");
+        const passwordInput = document.getElementById("password");
+        const loginButton = document.getElementById("login-btn");
+
+        // Gestión de intentos fallidos
+        const MAX_ATTEMPTS = 5;
+        const BLOCK_DURATION = 5 * 60 * 1000; // 5 minutos en milisegundos
+        let loginAttempts = parseInt(localStorage.getItem("loginAttempts")) || 0;
+        let blockTimestamp = parseInt(localStorage.getItem("blockTimestamp")) || 0;
+
+        // Verificar si está bloqueado
+        function checkIfBlocked() {
+            const now = Date.now();
+            if (loginAttempts >= MAX_ATTEMPTS && now < blockTimestamp + BLOCK_DURATION) {
+                const remainingTime = Math.ceil((blockTimestamp + BLOCK_DURATION - now) / 1000 / 60);
+                errorMessage.textContent = `Demasiados intentos. Intenta de nuevo en ${remainingTime} minuto(s).`;
+                errorMessage.style.display = "block";
+                loginButton.disabled = true;
+                return true;
+            } else if (loginAttempts >= MAX_ATTEMPTS && now >= blockTimestamp + BLOCK_DURATION) {
+                // Resetear intentos si el bloqueo ha expirado
+                loginAttempts = 0;
+                localStorage.setItem("loginAttempts", loginAttempts);
+                localStorage.removeItem("blockTimestamp");
+                loginButton.disabled = false;
+            }
+            return false;
+        }
+
+        // Verificar si ya está autenticado
+        if (localStorage.getItem("isAuthenticated") === "true") {
+            showLinks();
+        } else {
+            checkIfBlocked();
+        }
+
+        function checkCredentials() {
+            if (checkIfBlocked()) return;
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (VALID_USERS[username] && VALID_USERS[username] === password) {
+                localStorage.setItem("isAuthenticated", "true");
+                loginAttempts = 0;
+                localStorage.setItem("loginAttempts", loginAttempts);
+                localStorage.removeItem("blockTimestamp");
+                showLinks();
+            } else {
+                loginAttempts++;
+                localStorage.setItem("loginAttempts", loginAttempts);
+                if (loginAttempts >= MAX_ATTEMPTS) {
+                    blockTimestamp = Date.now();
+                    localStorage.setItem("blockTimestamp", blockTimestamp);
+                    errorMessage.textContent = "Demasiados intentos. Bloqueado por 5 minutos.";
+                    errorMessage.style.display = "block";
+                    loginButton.disabled = true;
                 } else {
-                    submenu.style.display = 'none';
+                    errorMessage.textContent = `Usuario o contraseña incorrectos. Intentos restantes: ${MAX_ATTEMPTS - loginAttempts}`;
+                    errorMessage.style.display = "block";
                 }
-            });
+                usernameInput.value = "";
+                passwordInput.value = "";
+            }
+        }
+
+        function showLinks() {
+            authSection.style.display = "none";
+            linksSection.style.display = "block";
+        }
+
+        function logout() {
+            localStorage.removeItem("isAuthenticated");
+            authSection.style.display = "block";
+            linksSection.style.display = "none";
+            errorMessage.style.display = "none";
+            usernameInput.value = "";
+            passwordInput.value = "";
+            checkIfBlocked();
+        }
+
+        // Permitir enter para enviar las credenciales
+        usernameInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                passwordInput.focus();
+            }
+        });
+        passwordInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkCredentials();
+            }
+        });
+
+        // Función para alternar menús desplegables
+        function toggleMenu(index) {
+            const submenu = document.getElementById(`submenu-${index}`);
+            const isActive = submenu.classList.contains("active");
+            // Cerrar todos los submenús
+            document.querySelectorAll(".submenu").forEach(sub => sub.classList.remove("active"));
+            // Abrir el submenú seleccionado si no estaba activo
+            if (!isActive) {
+                submenu.classList.add("active");
+            }
         }
     </script>
 </body>
