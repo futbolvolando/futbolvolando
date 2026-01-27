@@ -3,416 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fútbol Volando 97</title>
+    <title>FUTVOL 97 | PREMIUM ACCESS</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap');
+
+        :root {
+            --neon-green: #00f2ff;
+            --neon-glow: rgba(0, 242, 255, 0.5);
+            --bg-dark: #050a0f;
+            --card-bg: rgba(10, 20, 30, 0.8);
+            --accent-red: #ff3333;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            margin: 0;
-            font-family: 'Bebas Neue', sans-serif;
-            background: url('https://universidadeuropea.com/resources/media/images/scouting-futbol-1200x630.original.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
+            background: radial-gradient(circle at center, #0a192f 0%, #050a0f 100%);
+            color: #e0f7fa;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
             overflow-x: hidden;
         }
-        .container {
-            background: rgba(0, 0, 0, 0.9);
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 700px;
-            width: 90%;
+
+        .main-frame {
+            width: 95%;
+            max-width: 550px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            border-radius: 30px;
+            padding: 40px 25px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
             text-align: center;
-            box-shadow: 0 10px 20px rgba(0, 255, 0, 0.5);
-            backdrop-filter: blur(12px);
+            letter-spacing: 3px;
+            background: linear-gradient(to bottom, #fff, var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
         }
-        h1 {
-            font-size: 3.5em;
-            color: #00ff00;
-            text-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+
+        .status-bar {
+            font-size: 0.7rem;
+            text-align: center;
+            letter-spacing: 2px;
+            color: var(--neon-green);
             margin-bottom: 30px;
-            animation: pulse 2s infinite;
+            text-transform: uppercase;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
+
+        /* --- Auth Section --- */
+        .auth-container { display: flex; flex-direction: column; gap: 15px; }
+        
         input {
-            padding: 15px;
             width: 100%;
-            border: 3px solid #00ff00;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 242, 255, 0.1);
+            border-radius: 12px;
             color: white;
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            box-sizing: border-box;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            transition: var(--transition);
         }
+
         input:focus {
             outline: none;
-            border-color: #ffcc00;
-            box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px var(--neon-glow);
         }
-        button {
-            padding: 15px;
-            width: 100%;
-            background: linear-gradient(45deg, #00ff00, #00cc00);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 1.4em;
+
+        .btn-login {
+            padding: 18px;
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            font-family: 'Orbitron', sans-serif;
             cursor: pointer;
-            transition: transform 0.3s, background 0.3s;
-        }
-        button:disabled {
-            background: #666;
-            cursor: not-allowed;
-        }
-        button:hover:not(:disabled) {
-            background: linear-gradient(45deg, #00cc00, #009900);
-            transform: scale(1.05);
-        }
-        .error {
-            color: #ff3333;
-            font-size: 1.1em;
-            margin-top: 15px;
-            display: none;
-            text-shadow: 0 0 5px rgba(255, 51, 51, 0.7);
-        }
-        .streaming-links {
-            display: none;
-            margin-top: 30px;
-        }
-        .menu-item {
-            margin: 20px 0;
-        }
-        .menu-button {
-            background: linear-gradient(45deg, #ffcc00, #ff6600);
-            padding: 15px;
-            font-size: 1.5em;
-            width: 100%;
-            border-radius: 10px;
-            color: #000;
+            border-radius: 12px;
+            transition: 0.3s;
             text-transform: uppercase;
-            transition: background 0.3s, transform 0.3s;
-            position: relative;
-            overflow: hidden;
         }
-        .menu-button:hover {
-            background: linear-gradient(45deg, #ff9900, #ff3300);
-            transform: scale(1.03);
+
+        .btn-login:hover {
+            background: var(--neon-green);
+            color: black;
+            box-shadow: 0 0 25px var(--neon-glow);
         }
-        .menu-button::before {
-            content: '⚽';
-            position: absolute;
-            left: -30px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.2em;
-            opacity: 0;
-            transition: left 0.3s, opacity 0.3s;
+
+        /* --- Streaming Dashboard --- */
+        #dashboard { display: none; }
+
+        .search-box { margin-bottom: 20px; }
+
+        .menu-container {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 8px;
         }
-        .menu-button:hover::before {
-            left: 10px;
-            opacity: 1;
+
+        .menu-container::-webkit-scrollbar { width: 4px; }
+        .menu-container::-webkit-scrollbar-thumb { background: var(--neon-green); border-radius: 10px; }
+
+        .category-block { margin-bottom: 12px; }
+
+        .category-btn {
+            width: 100%;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            transition: var(--transition);
         }
+
+        .category-btn:hover {
+            background: rgba(0, 242, 255, 0.08);
+            border-color: var(--neon-green);
+        }
+
         .submenu {
             display: none;
-            margin-top: 15px;
-            padding: 20px;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            position: relative;
-            background-size: cover;
-            background-position: center;
+            padding: 10px;
+            flex-direction: column;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0 0 12px 12px;
         }
-        .submenu.active {
-            display: block;
-            animation: slideIn 0.5s ease;
-        }
-        @keyframes slideIn {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .submenu a {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 10px;
-            color: #ffcc00;
+
+        .submenu.active { display: flex; animation: slideDown 0.3s ease; }
+
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .link-card {
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.02);
             text-decoration: none;
-            font-size: 1.2em;
-            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        .submenu a:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 255, 0, 0.7);
-            background: rgba(255, 255, 255, 0.3);
-            color: #ffee66;
-        }
-        .submenu a::before {
-            content: '▶';
-            position: absolute;
-            left: -30px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1em;
-            opacity: 0;
-            transition: left 0.3s, opacity 0.3s;
-        }
-        .submenu a:hover::before {
-            left: 10px;
-            opacity: 1;
-        }
-        .submenu img {
-            width: 50px;
-            height: 50px;
-            margin-right: 15px;
+            color: #888;
             border-radius: 8px;
-            border: 2px solid #00ff00;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
         }
+
+        .link-card:hover {
+            background: rgba(0, 242, 255, 0.1);
+            color: white;
+            border-left: 2px solid var(--neon-green);
+            padding-left: 25px;
+        }
+
         .logout-btn {
-            background: linear-gradient(45deg, #ff3333, #cc0000);
-            margin-top: 20px;
+            margin-top: 25px;
+            width: 100%;
+            background: transparent;
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            opacity: 0.7;
         }
-        .logout-btn:hover {
-            background: linear-gradient(45deg, #cc0000, #990000);
-        }
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 2.5em;
-            }
-            .container {
-                padding: 25px;
-            }
-            .menu-button {
-                font-size: 1.2em;
-            }
-            .submenu a {
-                font-size: 1em;
-            }
-            .submenu img {
-                width: 40px;
-                height: 40px;
-            }
+
+        .logout-btn:hover { opacity: 1; background: rgba(255, 51, 51, 0.1); }
+
+        .error-msg {
+            color: var(--accent-red);
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Fútbol Volando 97</h1>
-        <div id="auth-section">
-            <input type="text" id="username" placeholder="Usuario" />
-            <input type="password" id="password" placeholder="Contraseña" />
-            <button id="login-btn" onclick="checkCredentials()">¡Entrar al Estadio!</button>
-            <p class="error" id="error-message"></p>
+
+    <div class="main-frame">
+        <header>
+            <h1>FÚTBOL VOLANDO 97</h1>
+            <div class="status-bar" id="sys-status">SISTEMA: EN ESPERA</div>
+        </header>
+
+        <div id="auth-ui" class="auth-container">
+            <input type="text" id="username" placeholder="OPERADOR">
+            <input type="password" id="password" placeholder="CLAVE DE ACCESO">
+            <button class="btn-login" onclick="login()">AUTORIZAR INGRESO</button>
+            <div id="error-box" class="error-msg"></div>
         </div>
-        <div class="streaming-links" id="links-section">
-            <div class="menu">
-                <div class="menu-item">
-                    <button class="menu-button" onclick="toggleMenu(0)">- VAMOS+ -</button>
-                    <div class="submenu" id="submenu-0">
-                        <a href="acestream://594b59d435527327c9b6965f247995b907bfc285" target="_blank">#Vamos Opción 1</a>
-                        <a href="acestream://4e99e755aa32c4bc043a4bb1cd1de35f9bd94dde" target="_blank">#Vamos Opción 2</a>
-                    </div>
-                </div>
-                <div class="menu-item">
-                    <button class="menu-button" onclick="toggleMenu(1)">- LA LIGA TV BAR -</button>
-                    <div class="submenu" id="submenu-1">
-                        <a href="acestream://94d34491106e00394835c8cb68aa94481339b53f" target="_blank">La Liga TV Bar Opción 1</a>
-                        <a href="acestream://608b0faf7d3d25f6fe5dba13d5e4b4142949990e" target="_blank">La Liga TV Bar Opción 2</a>
-                    </div>
-                </div>
-                <div class="menu-item">
-                    <button class="menu-button" onclick="toggleMenu(2)">- MOVISTAR LA LIGA -</button>
-                    <div class="submenu" id="submenu-2">
-                        <a href="acestream://107c3ce5a5d2527c9f06e4eab87477201791f231" target="_blank">Movistar LaLiga Opción 1</a>
-                        <a href="acestream://d2ddf9802ccfdc456f872eea4d24596880a638a0" target="_blank">Movistar LaLiga Opción 2</a>
-                        <a href="acestream://00c9bc9c5d7d87680a5a6bed349edfa775a89947" target="_blank">Movistar LaLiga Opción 3</a>
-                        <a href="acestream://c9321006921967d6258df6945f1d598a5c0cbf1e" target="_blank">Movistar LaLiga Opción 4</a>
-                        <a href="acestream://4b528d10eaad747ddf52251206177573ee3e9f74" target="_blank">Movistar LaLiga Opción 5</a>
-                    </div>
-                </div>
-                <div class="menu-item">
-                    <button class="menu-button" onclick="toggleMenu(3)">- DAZN LALIGA -</button>
-                    <div class="submenu" id="submenu-3">
-                        <a href="acestream://e2b8a4aba2f4ea3dd68992fcdb65c9e62d910b05" target="_blank">Dazn LaLiga Opción 1</a>
-                        <a href="acestream://74defb8f4ed3a917fd07c21b34f43c17107ec618" target="_blank">Dazn LaLiga Opción 2</a>
-                        <a href="acestream://4e6d9cf7d177366045d33cd8311d8b1d7f4bed1f" target="_blank">Dazn LaLiga Opción 3</a>
-                        <a href="acestream://0e50439e68aa2435b38f0563bb2f2e98f32ff4b1" target="_blank">Dazn LaLiga Opción 4</a>
-                        <a href="acestream://1bb5bf76fb2018d6db9aaa29b1467ecdfabe2884" target="_blank">Dazn LaLiga Opción 5</a>
-                        <a href="acestream://e2b8a4aba2f4ea3dd68992fcdb65c9e62d910b05" target="_blank">Dazn LaLiga Opción 6</a>
-                        <a href="acestream://74defb8f4ed3a917fd07c21b34f43c17107ec618" target="_blank">Dazn LaLiga Opción 7</a>
-                    </div>
-                </div>
-                <div class="menu-item">
-                    <button class="menu-button" onclick="toggleMenu(4)">- MOVISTAR LIGA DE CAMPEONES -</button>
-                    <div class="submenu" id="submenu-4">
-                        <a href="acestream://97df5b7824948972d041d8ca2a4d29c90b641bc9" target="_blank">Movistar Liga de Campeones Opción 1</a>
-                        <a href="acestream://0f7842f8b6c26571e5a974407b61623e56e6a052" target="_blank">Movistar Liga de Campeones Opción 2</a>
-                        <a href="acestream://f3eea003e23f94dc2d527306de9dd386e3ebf4ba" target="_blank">Movistar Liga de Campeones Opción 3</a>
-                        <a href="acestream://e7d8cae7f693fe46e89bbf74820caac9ffb32a30" target="_blank">Movistar Liga de Campeones 2 Opción 1</a>
-                        <a href="acestream://2b5129adc57d43790634d796fe3468b9fd061259" target="_blank">Movistar Liga de Campeones 3 Opción 1</a>
-                    </div>
-                </div>
-                <div class="menu-item">
-                    <button class="menu-button" onclick="toggleMenu(5)">- MOVISTAR DEPORTES Y PLUS -</button>
-                    <div class="submenu" id="submenu-5">
-                        <a href="acestream://199190e3f28c1de0be34bccf0d3568dc65209b99" target="_blank">Movistar Plus Opción 1</a>
-                        <a href="acestream://5866e83279307bf919068ae7a0d250e4e424e464" target="_blank">Movistar Plus Opción 2</a>
-                        <a href="acestream://e19c1fc5e3ada56c60d45257f7f4ed0d14bf7003" target="_blank">Movistar Plus 2 Opción 1</a>
-                        <a href="acestream://3692ea4cdda97eb0062ed5d656ebd61f149ebd0b" target="_blank">Movistar Deportes </a>
-                        <a href="acestream://73d38feaa770d788848ec098470e32670fe55a61" target="_blank">Movistar Deportes 2 </a>
-                        <a href="acestream://29d786d72d4b53dbc333af3a50f8fb021aa0296f" target="_blank">Movistar Deportes 3 </a>
-                        <a href="acestream://37825883ed185365e3194a79207347f6c7bd5ba5" target="_blank">Movistar Deportes 4 </a>
-                        <a href="acestream://6dc4ac4eeae18e9daec433b01db82435cf84c57c" target="_blank">Movistar Deportes 5 </a>
-                    </div>
-                </div>
-                <div class="menu-item">
-                    <button class="menu-button" onclick="toggleMenu(6)">- DAZN Y DAZN F1 -</button>
-                    <div class="submenu" id="submenu-6">
-                        <a href="acestream://d6281d4e6310269b416180442a470d23a4a99dc9" target="_blank">Dazn F1 Opción 1</a>
-                        <a href="acestream://38e9ae1ee0c96d7c6187c9c4cc60ffccb565bdf7" target="_blank">Dazn F1 Opción 2</a>
-                        <a href="acestream://3f5b7e2f883fe4b4b973e198d147a513d5c7c32a" target="_blank">Dazn F1 Opción 3</a>
-                        <a href="acestream://3f5b7e2f883fe4b4b973e198d147a513d5c7c32a" target="_blank">Dazn F1 Opción 3</a>
-                        <a href="acestream://b03f9310155cf3b4eafc1dfba763781abc3ff025" target="_blank">Dazn 1 Opción 1</a>
-                        <a href="acestream://36394be1db2e20b5997d987c32fd38c7f0f194b7" target="_blank">Dazn 1 Opción 2</a>
-                        <a href="acestream://43004e955731cd3afcc34d24e5178d4b427bff37" target="_blank">Dazn 2</a>
-                        <a href="acestream://4e401fdceebffdf1f09aef954844d09f6c62f460" target="_blank">Dazn 3</a>
-                        <a href="acestream://eb884f77ce8815cf1028c4d85e8b092c27ea1693" target="_blank">Dazn 4</a>
-                    </div>
-                </div>
-                <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+
+        <div id="dashboard">
+            <div class="search-box">
+                <input type="text" id="search" placeholder="BUSCAR CANAL O COMPETICIÓN..." onkeyup="filterMenu()">
             </div>
+            
+            <div class="menu-container" id="links-engine">
+                </div>
+
+            <button class="logout-btn" onclick="logout()">CERRAR SESIÓN</button>
         </div>
     </div>
 
     <script>
-        // Lista de usuarios y contraseñas válidos
-        const VALID_USERS = {
-            "josepj97": "josepj97",
-            "carlos": "yoelycarlos123",
-            "antonio92": "antonio92",
-            "manuelutrera": "manuelutrera",
-            "": ""
-        };
-
-        const authSection = document.getElementById("auth-section");
-        const linksSection = document.getElementById("links-section");
-        const errorMessage = document.getElementById("error-message");
-        const usernameInput = document.getElementById("username");
-        const passwordInput = document.getElementById("password");
-        const loginButton = document.getElementById("login-btn");
-
-        // Gestión de intentos fallidos
-        const MAX_ATTEMPTS = 5;
-        const BLOCK_DURATION = 5 * 60 * 1000; // 5 minutos en milisegundos
-        let loginAttempts = parseInt(localStorage.getItem("loginAttempts")) || 0;
-        let blockTimestamp = parseInt(localStorage.getItem("blockTimestamp")) || 0;
-
-        // Verificar si está bloqueado
-        function checkIfBlocked() {
-            const now = Date.now();
-            if (loginAttempts >= MAX_ATTEMPTS && now < blockTimestamp + BLOCK_DURATION) {
-                const remainingTime = Math.ceil((blockTimestamp + BLOCK_DURATION - now) / 1000 / 60);
-                errorMessage.textContent = `Demasiados intentos. Intenta de nuevo en ${remainingTime} minuto(s).`;
-                errorMessage.style.display = "block";
-                loginButton.disabled = true;
-                return true;
-            } else if (loginAttempts >= MAX_ATTEMPTS && now >= blockTimestamp + BLOCK_DURATION) {
-                // Resetear intentos si el bloqueo ha expirado
-                loginAttempts = 0;
-                localStorage.setItem("loginAttempts", loginAttempts);
-                localStorage.removeItem("blockTimestamp");
-                loginButton.disabled = false;
+        // TODA TU BASE DE DATOS INTEGRADA
+        const CHANNELS_DB = [
+            {
+                title: "- VAMOS+ -",
+                links: [
+                    { name: "#Vamos Opción 1", url: "acestream://594b59d435527327c9b6965f247995b907bfc285" },
+                    { name: "#Vamos Opción 2", url: "acestream://4e99e755aa32c4bc043a4bb1cd1de35f9bd94dde" }
+                ]
+            },
+            {
+                title: "- LA LIGA TV BAR -",
+                links: [
+                    { name: "La Liga TV Bar Opción 1", url: "acestream://94d34491106e00394835c8cb68aa94481339b53f" },
+                    { name: "La Liga TV Bar Opción 2", url: "acestream://608b0faf7d3d25f6fe5dba13d5e4b4142949990e" }
+                ]
+            },
+            {
+                title: "- MOVISTAR LA LIGA -",
+                links: [
+                    { name: "Movistar LaLiga Opción 1", url: "acestream://107c3ce5a5d2527c9f06e4eab87477201791f231" },
+                    { name: "Movistar LaLiga Opción 2", url: "acestream://d2ddf9802ccfdc456f872eea4d24596880a638a0" },
+                    { name: "Movistar LaLiga Opción 3", url: "acestream://00c9bc9c5d7d87680a5a6bed349edfa775a89947" },
+                    { name: "Movistar LaLiga Opción 4", url: "acestream://c9321006921967d6258df6945f1d598a5c0cbf1e" },
+                    { name: "Movistar LaLiga Opción 5", url: "acestream://4b528d10eaad747ddf52251206177573ee3e9f74" }
+                ]
+            },
+            {
+                title: "- DAZN LALIGA -",
+                links: [
+                    { name: "Dazn LaLiga Opción 1", url: "acestream://e2b8a4aba2f4ea3dd68992fcdb65c9e62d910b05" },
+                    { name: "Dazn LaLiga Opción 2", url: "acestream://74defb8f4ed3a917fd07c21b34f43c17107ec618" },
+                    { name: "Dazn LaLiga Opción 3", url: "acestream://4e6d9cf7d177366045d33cd8311d8b1d7f4bed1f" },
+                    { name: "Dazn LaLiga Opción 4", url: "acestream://0e50439e68aa2435b38f0563bb2f2e98f32ff4b1" },
+                    { name: "Dazn LaLiga Opción 5", url: "acestream://1bb5bf76fb2018d6db9aaa29b1467ecdfabe2884" },
+                    { name: "Dazn LaLiga Opción 6", url: "acestream://e2b8a4aba2f4ea3dd68992fcdb65c9e62d910b05" },
+                    { name: "Dazn LaLiga Opción 7", url: "acestream://74defb8f4ed3a917fd07c21b34f43c17107ec618" }
+                ]
+            },
+            {
+                title: "- MOVISTAR LIGA DE CAMPEONES -",
+                links: [
+                    { name: "M. Liga de Campeones Opción 1", url: "acestream://97df5b7824948972d041d8ca2a4d29c90b641bc9" },
+                    { name: "M. Liga de Campeones Opción 2", url: "acestream://0f7842f8b6c26571e5a974407b61623e56e6a052" },
+                    { name: "M. Liga de Campeones Opción 3", url: "acestream://f3eea003e23f94dc2d527306de9dd386e3ebf4ba" },
+                    { name: "M. Liga de Campeones 2 Opción 1", url: "acestream://e7d8cae7f693fe46e89bbf74820caac9ffb32a30" },
+                    { name: "M. Liga de Campeones 3 Opción 1", url: "acestream://2b5129adc57d43790634d796fe3468b9fd061259" }
+                ]
+            },
+            {
+                title: "- MOVISTAR DEPORTES Y PLUS -",
+                links: [
+                    { name: "Movistar Plus Opción 1", url: "acestream://199190e3f28c1de0be34bccf0d3568dc65209b99" },
+                    { name: "Movistar Plus Opción 2", url: "acestream://5866e83279307bf919068ae7a0d250e4e424e464" },
+                    { name: "Movistar Plus 2 Opción 1", url: "acestream://e19c1fc5e3ada56c60d45257f7f4ed0d14bf7003" },
+                    { name: "Movistar Deportes", url: "acestream://3692ea4cdda97eb0062ed5d656ebd61f149ebd0b" },
+                    { name: "Movistar Deportes 2", url: "acestream://73d38feaa770d788848ec098470e32670fe55a61" },
+                    { name: "Movistar Deportes 3", url: "acestream://29d786d72d4b53dbc333af3a50f8fb021aa0296f" },
+                    { name: "Movistar Deportes 4", url: "acestream://37825883ed185365e3194a79207347f6c7bd5ba5" },
+                    { name: "Movistar Deportes 5", url: "acestream://6dc4ac4eeae18e9daec433b01db82435cf84c57c" }
+                ]
+            },
+            {
+                title: "- DAZN Y DAZN F1 -",
+                links: [
+                    { name: "Dazn F1 Opción 1", url: "acestream://d6281d4e6310269b416180442a470d23a4a99dc9" },
+                    { name: "Dazn F1 Opción 2", url: "acestream://38e9ae1ee0c96d7c6187c9c4cc60ffccb565bdf7" },
+                    { name: "Dazn F1 Opción 3", url: "acestream://3f5b7e2f883fe4b4b973e198d147a513d5c7c32a" },
+                    { name: "Dazn 1 Opción 1", url: "acestream://b03f9310155cf3b4eafc1dfba763781abc3ff025" },
+                    { name: "Dazn 1 Opción 2", url: "acestream://36394be1db2e20b5997d987c32fd38c7f0f194b7" },
+                    { name: "Dazn 2", url: "acestream://43004e955731cd3afcc34d24e5178d4b427bff37" },
+                    { name: "Dazn 3", url: "acestream://4e401fdceebffdf1f09aef954844d09f6c62f460" },
+                    { name: "Dazn 4", url: "acestream://eb884f77ce8815cf1028c4d85e8b092c27ea1693" }
+                ]
             }
-            return false;
+        ];
+
+        const VALID_USERS = { "josepj97": "josepj97", "carlos": "yoelycarlos123", "antonio92": "antonio92", "manuelutrera": "manuelutrera" };
+
+        function renderMenu() {
+            const container = document.getElementById('links-engine');
+            container.innerHTML = CHANNELS_DB.map((cat, idx) => `
+                <div class="category-block">
+                    <button class="category-btn" onclick="toggleSub(${idx})">
+                        <span>${cat.title}</span>
+                        <small>▶</small>
+                    </button>
+                    <div class="submenu" id="sub-${idx}">
+                        ${cat.links.map(l => `<a href="${l.url}" target="_blank" class="link-card">${l.name}</a>`).join('')}
+                    </div>
+                </div>
+            `).join('');
         }
 
-        // Verificar si ya está autenticado
-        if (localStorage.getItem("isAuthenticated") === "true") {
-            showLinks();
-        } else {
-            checkIfBlocked();
+        function toggleSub(idx) {
+            const el = document.getElementById(`sub-${idx}`);
+            const isActive = el.classList.contains('active');
+            document.querySelectorAll('.submenu').forEach(s => s.classList.remove('active'));
+            if(!isActive) el.classList.add('active');
         }
 
-        function checkCredentials() {
-            if (checkIfBlocked()) return;
-
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
-
-            if (VALID_USERS[username] && VALID_USERS[username] === password) {
-                localStorage.setItem("isAuthenticated", "true");
-                loginAttempts = 0;
-                localStorage.setItem("loginAttempts", loginAttempts);
-                localStorage.removeItem("blockTimestamp");
-                showLinks();
+        function login() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            if(VALID_USERS[u] === p) {
+                document.getElementById('auth-ui').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('sys-status').textContent = "SISTEMA: ONLINE | OPERADOR: " + u.toUpperCase();
+                renderMenu();
             } else {
-                loginAttempts++;
-                localStorage.setItem("loginAttempts", loginAttempts);
-                if (loginAttempts >= MAX_ATTEMPTS) {
-                    blockTimestamp = Date.now();
-                    localStorage.setItem("blockTimestamp", blockTimestamp);
-                    errorMessage.textContent = "Demasiados intentos. Bloqueado por 5 minutos.";
-                    errorMessage.style.display = "block";
-                    loginButton.disabled = true;
-                } else {
-                    errorMessage.textContent = `Usuario o contraseña incorrectos. Intentos restantes: ${MAX_ATTEMPTS - loginAttempts}`;
-                    errorMessage.style.display = "block";
-                }
-                usernameInput.value = "";
-                passwordInput.value = "";
+                const err = document.getElementById('error-box');
+                err.textContent = "ACCESO DENEGADO: CREDENCIALES INVÁLIDAS";
+                err.style.display = 'block';
             }
         }
 
-        function showLinks() {
-            authSection.style.display = "none";
-            linksSection.style.display = "block";
+        function filterMenu() {
+            const query = document.getElementById('search').value.toLowerCase();
+            document.querySelectorAll('.category-block').forEach(block => {
+                const text = block.textContent.toLowerCase();
+                block.style.display = text.includes(query) ? 'block' : 'none';
+            });
         }
 
-        function logout() {
-            localStorage.removeItem("isAuthenticated");
-            authSection.style.display = "block";
-            linksSection.style.display = "none";
-            errorMessage.style.display = "none";
-            usernameInput.value = "";
-            passwordInput.value = "";
-            checkIfBlocked();
-        }
-
-        // Permitir enter para enviar las credenciales
-        usernameInput.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                passwordInput.focus();
-            }
-        });
-        passwordInput.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                checkCredentials();
-            }
-        });
-
-        // Función para alternar menús desplegables
-        function toggleMenu(index) {
-            const submenu = document.getElementById(`submenu-${index}`);
-            const isActive = submenu.classList.contains("active");
-            // Cerrar todos los submenús
-            document.querySelectorAll(".submenu").forEach(sub => sub.classList.remove("active"));
-            // Abrir el submenú seleccionado si no estaba activo
-            if (!isActive) {
-                submenu.classList.add("active");
-            }
-        }
+        function logout() { location.reload(); }
     </script>
 </body>
 </html>
