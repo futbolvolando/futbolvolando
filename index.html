@@ -450,6 +450,7 @@
             color: #ccc;
             border-left: 3px solid transparent;
             transition: var(--transition);
+            cursor: pointer;
         }
 
         .stream-link:hover {
@@ -548,6 +549,127 @@
             box-shadow: 0 10px 20px rgba(255, 71, 87, 0.2);
         }
 
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid var(--neon-green);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-green);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .id-display {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 18px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .btn-open {
+            background: var(--neon-green);
+            color: #000;
+        }
+
+        .btn-open:hover {
+            background: #00cc7a;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 255, 157, 0.3);
+        }
+
+        .btn-copy {
+            background: transparent;
+            color: var(--neon-blue);
+            border: 2px solid var(--neon-blue);
+        }
+
+        .btn-copy:hover {
+            background: rgba(0, 224, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 224, 255, 0.2);
+        }
+
+        .btn-close {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-close:hover {
+            background: rgba(255, 71, 87, 0.1);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .main-container {
@@ -581,6 +703,14 @@
             .auth-card {
                 padding: 30px 20px;
             }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+            
+            .modal-content {
+                padding: 25px 20px;
+            }
         }
 
         /* Empty state */
@@ -612,11 +742,21 @@
             opacity: 0;
             transition: transform 0.5s, opacity 0.5s;
             z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .copy-feedback.show {
             transform: translateY(0);
             opacity: 1;
+        }
+
+        /* Shake animation for errors */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
     </style>
 </head>
@@ -715,21 +855,24 @@
         </footer>
     </div>
 
+    <!-- Modal para enlaces -->
+    <div id="ace-modal" style="display: none;"></div>
+
     <!-- Copy Feedback -->
     <div class="copy-feedback" id="copy-feedback">
-        <i class="fas fa-check-circle"></i> Enlace copiado al portapapeles
+        <i class="fas fa-check-circle"></i> <span id="feedback-text">Enlace copiado</span>
     </div>
 
     <script>
-        // Base de datos de canales (actualizada)
+        // Base de datos de canales con solo IDs
         const CHANNELS_DB = [
             {
                 title: "VAMOS+",
                 icon: "fas fa-tv",
                 color: "#00ff9d",
                 links: [
-                    { name: "Vamos Opción 1 HD", url: "acestream://3b2a8b41e7097c16b0468b42d7de0320886fa933", type: "HD" },
-                    { name: "Vamos Opción 2 HD", url: "acestream://2940120bf034db79a7f5849846ccea0255172eae", type: "HD" }
+                    { name: "Vamos Opción 1 HD", id: "594b59d435527327c9b6965f247995b907bfc285", type: "HD" },
+                    { name: "Vamos Opción 2 HD", id: "4e99e755aa32c4bc043a4bb1cd1de35f9bd94dde", type: "HD" }
                 ]
             },
             {
@@ -737,8 +880,8 @@
                 icon: "fas fa-futbol",
                 color: "#00b8ff",
                 links: [
-                    { name: "La Liga TV Bar Opción 1", url: "acestream://94d34491106e00394835c8cb68aa94481339b53f", type: "FHD" },
-                    { name: "La Liga TV Bar Opción 2", url: "acestream://608b0faf7d3d25f6fe5dba13d5e4b4142949990e", type: "FHD" }
+                    { name: "La Liga TV Bar Opción 1", id: "94d34491106e00394835c8cb68aa94481339b53f", type: "FHD" },
+                    { name: "La Liga TV Bar Opción 2", id: "608b0faf7d3d25f6fe5dba13d5e4b4142949990e", type: "FHD" }
                 ]
             },
             {
@@ -746,11 +889,11 @@
                 icon: "fas fa-satellite",
                 color: "#9d4edd",
                 links: [
-                    { name: "Movistar LaLiga 1", url: "acestream://af458073c3096293a4dea9f369d4f308e7125bd6", type: "4K" },
-                    { name: "Movistar LaLiga 2", url: "acestream://d4ff041287a43e3114d411d671c4b4e92e21f33y", type: "4K" },
-                    { name: "Movistar LaLiga 3", url: "acestream://00c9bc9c5d7d87680a5a6bed349edfa775a89947", type: "HD" },
-                    { name: "Movistar LaLiga 4", url: "acestream://c9321006921967d6258df6945f1d598a5c0cbf1e", type: "HD" },
-                    { name: "Movistar LaLiga 5", url: "acestream://8c30b600cc48899991b452805df48b68d998e61c", type: "HD" }
+                    { name: "Movistar LaLiga 1", id: "107c3ce5a5d2527c9f06e4eab87477201791f231", type: "4K" },
+                    { name: "Movistar LaLiga 2", id: "911ad127726234b97658498a8b790fdd7516541d", type: "4K" },
+                    { name: "Movistar LaLiga 3", id: "00c9bc9c5d7d87680a5a6bed349edfa775a89947", type: "HD" },
+                    { name: "Movistar LaLiga 4", id: "c9321006921967d6258df6945f1d598a5c0cbf1e", type: "HD" },
+                    { name: "Movistar LaLiga 5", id: "8c30b600cc48899991b452805df48b68d998e61c", type: "HD" }
                 ]
             },
             {
@@ -758,11 +901,16 @@
                 icon: "fas fa-play-circle",
                 color: "#ff6b6b",
                 links: [
-                    { name: "DAZN LaLiga 1", url: "acestream://19f28f60c908f987b1a03da078e63320d7bf29e8", type: "FHD" },
-                    { name: "DAZN LaLiga 2", url: "acestream://d1596a3988b84a4d2711fd380eb8a53256ad74ae", type: "FHD" },
-                    { name: "DAZN LaLiga 3", url: "acestream://19f28f60c908f987b1a03da078e63320d7bf29e8", type: "HD" },
-                    { name: "DAZN LaLiga 4", url: "acestream://0e50439e68aa2435b38f0563bb2f2e98f32ff4b1", type: "HD" },
-                    { name: "DAZN LaLiga 5", url: "acestream://1bb5bf76fb2018d6db9aaa29b1467ecdfabe2884", type: "HD" }
+                    { name: "DAZN LaLiga 1", id: "19f28f60c908f987b1a03da078e63320d7bf29e8", type: "FHD" },
+                    { name: "DAZN LaLiga 2", id: "74defb8f4ed3a917fd07c21b34f43c17107ec618", type: "FHD" },
+                    { name: "DAZN LaLiga 3", id: "0e50439e68aa2435b38f0563bb2f2e98f32ff4b1", type: "HD" },
+                    { name: "DAZN LaLiga 4", id: "1bb5bf76fb2018d6db9aaa29b1467ecdfabe2884", type: "HD" },
+                    { name: "DAZN LaLiga 5", id: "e2b8a4aba2f4ea3dd68992fcdb65c9e62d910b05", type: "HD" },
+                    { name: "DAZN LaLiga 6", id: "e2b8a4aba2f4ea3dd68992fcdb65c9e62d910b05", type: "HD" },
+                    { name: "DAZN LaLiga 7", id: "4e6d9cf7d177366045d33cd8311d8b1d7f4bed1f", type: "HD" },
+                    { name: "DAZN LaLiga 8", id: "9c75f1d190c518cfe0f236415b8dccc1f676ef3b", type: "HD" },
+                    { name: "DAZN LaLiga 9", id: "0e50439e68aa2435b38f0563bb2f2e98f32ff4b1", type: "HD" },
+                    { name: "DAZN LaLiga 10", id: "74defb8f4ed3a917fd07c21b34f43c17107ec618", type: "HD" }
                 ]
             },
             {
@@ -770,12 +918,13 @@
                 icon: "fas fa-trophy",
                 color: "#ffd32a",
                 links: [
-                    { name: "M. Champions Opción 1", url: "acestream://0f7842f8b6c26571e5a974407b61623e56e6a052", type: "4K" },
-                    { name: "M. Champions Opción 2", url: "acestream://152169ce99e1fd27f2249c18384a121079cdef29", type: "4K" },
-                    { name: "M. Champions Opción 3", url: "acestream://e7d8cae7f693fe46e89bbf74820caac9ffb32a30", type: "FHD" },
-                    { name: "M. Champions 2 Opción 1", url: "acestream://e7d8cae7f693fe46e89bbf74820caac9ffb32a30", type: "FHD" },
-                    { name: "M. Champions 2 Opción 2", url: "acestream://c6a3673f6a37b1bd3cf31fdd6404dd33d48cfccb", type: "HD" },
-                    { name: "M. Champions 2 Opción 3", url: "acestream://498c56bd00f535e440c392de5af992421a31355c", type: "HD" }
+                    { name: "M. Champions Opción 1", id: "0f7842f8b6c26571e5a974407b61623e56e6a052", type: "4K" },
+                    { name: "M. Champions Opción 2", id: "152169ce99e1fd27f2249c18384a121079cdef29", type: "4K" },
+                    { name: "M. Champions Opción 3", id: "e7d8cae7f693fe46e89bbf74820caac9ffb32a30", type: "FHD" },
+                    { name: "M. Champions 2 Opción 1", id: "e7d8cae7f693fe46e89bbf74820caac9ffb32a30", type: "FHD" },
+                    { name: "M. Champions 2 Opción 2", id: "c6a3673f6a37b1bd3cf31fdd6404dd33d48cfccb", type: "HD" },
+                    { name: "M. Champions 2 Opción 3", id: "498c56bd00f535e440c392de5af992421a31355c", type: "HD" },
+                    { name: "M. Champions 3 Opción 1", id: "cfc371890bfb502737a26de5215e50929c52d0f9", type: "HD" }
                 ]
             },
             {
@@ -783,13 +932,14 @@
                 icon: "fas fa-running",
                 color: "#00e0ff",
                 links: [
-                    { name: "Movistar Plus 1", url: "acestream://8c67cdb5ba81976662c3a67984a9545d9cfb0f70", type: "FHD" },
-                    { name: "Movistar Plus 2", url: "acestream://fbc39d8a9e5d7c9ac6a1438d440104620f54e09c", type: "FHD" },
-                    { name: "Movistar Deportes", url: "acestream://3692ea4cdda97eb0062ed5d656ebd61f149ebd0b", type: "HD" },
-                    { name: "Movistar Deportes 2", url: "acestream://73d38feaa770d788848ec098470e32670fe55a61", type: "HD" },
-                    { name: "Movistar Deportes 3", url: "acestream://29d786d72d4b53dbc333af3a50f8fb021aa0296f", type: "HD" },
-                    { name: "Movistar Deportes 4", url: "acestream://37825883ed185365e3194a79207347f6c7bd5ba5", type: "HD" },
-                    { name: "Movistar Deportes 5", url: "acestream://6dc4ac4eeae18e9daec433b01db82435cf84c57c", type: "HD" }
+                    { name: "Movistar Plus 1", id: "199190e3f28c1de0be34bccf0d3568dc65209b99", type: "FHD" },
+                    { name: "Movistar Plus 2", id: "5866e83279307bf919068ae7a0d250e4e424e464", type: "FHD" },
+                    { name: "Movistar Plus 2 Opción 1", id: "e19c1fc5e3ada56c60d45257f7f4ed0d14bf7003", type: "HD" },
+                    { name: "Movistar Deportes", id: "3692ea4cdda97eb0062ed5d656ebd61f149ebd0b", type: "HD" },
+                    { name: "Movistar Deportes 2", id: "73d38feaa770d788848ec098470e32670fe55a61", type: "HD" },
+                    { name: "Movistar Deportes 3", id: "29d786d72d4b53dbc333af3a50f8fb021aa0296f", type: "HD" },
+                    { name: "Movistar Deportes 4", id: "37825883ed185365e3194a79207347f6c7bd5ba5", type: "HD" },
+                    { name: "Movistar Deportes 5", id: "6dc4ac4eeae18e9daec433b01db82435cf84c57c", type: "HD" }
                 ]
             },
             {
@@ -797,12 +947,14 @@
                 icon: "fas fa-flag-checkered",
                 color: "#ff4757",
                 links: [
-                    { name: "DAZN F1 Opción 1", url: "acestream://d6281d4e6310269b416180442a470d23a4a99dc9", type: "4K" },
-                    { name: "DAZN F1 Opción 2", url: "acestream://38e9ae1ee0c96d7c6187c9c4cc60ffccb565bdf7", type: "4K" },
-                    { name: "DAZN F1 Opción 3", url: "acestream://3f5b7e2f883fe4b4b973e198d147a513d5c7c32a", type: "FHD" },
-                    { name: "DAZN 1 Opción 1", url: "acestream://b03f9310155cf3b4eafc1dfba763781abc3ff025", type: "HD" },
-                    { name: "DAZN 1 Opción 2", url: "acestream://36394be1db2e20b5997d987c32fd38c7f0f194b7", type: "HD" },
-                    { name: "DAZN 2", url: "acestream://43004e955731cd3afcc34d24e5178d4b427bff37", type: "HD" }
+                    { name: "DAZN F1 Opción 1", id: "d6281d4e6310269b416180442a470d23a4a99dc9", type: "4K" },
+                    { name: "DAZN F1 Opción 2", id: "38e9ae1ee0c96d7c6187c9c4cc60ffccb565bdf7", type: "4K" },
+                    { name: "DAZN F1 Opción 3", id: "3f5b7e2f883fe4b4b973e198d147a513d5c7c32a", type: "FHD" },
+                    { name: "DAZN 1 Opción 1", id: "b03f9310155cf3b4eafc1dfba763781abc3ff025", type: "HD" },
+                    { name: "DAZN 1 Opción 2", id: "36394be1db2e20b5997d987c32fd38c7f0f194b7", type: "HD" },
+                    { name: "DAZN 2", id: "43004e955731cd3afcc34d24e5178d4b427bff37", type: "HD" },
+                    { name: "DAZN 3", id: "4e401fdceebffdf1f09aef954844d09f6c62f460", type: "HD" },
+                    { name: "DAZN 4", id: "eb884f77ce8815cf1028c4d85e8b092c27ea1693", type: "HD" }
                 ]
             },
             {
@@ -810,8 +962,8 @@
                 icon: "fas fa-fish",
                 color: "#00ff9d",
                 links: [
-                    { name: "Caza y Pesca 1", url: "acestream://8b9e46eb3a9b4ef23b7d3d86c73a0851580f8caa", type: "HD" },
-                    { name: "Caza y Pesca 2", url: "acestream://277a6fb47189db801c5b7b05ad89c690571f3e9c", type: "HD" }
+                    { name: "Caza y Pesca 1", id: "277a6fb47189db801c5b7b05ad89c690571f3e9c", type: "HD" },
+                    { name: "Caza y Pesca 2", id: "8b9e46eb3a9b4ef23b7d3d86c73a0851580f8caa", type: "HD" }
                 ]
             }
         ];
@@ -827,12 +979,22 @@
 
         // Estado de la aplicación
         let currentUser = null;
+        let currentModalId = null;
 
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
             // Configurar búsqueda en tiempo real
             const searchInput = document.getElementById('search');
             searchInput.addEventListener('input', filterChannels);
+            
+            // Permitir login con Enter
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    if (document.getElementById('auth-section').style.display !== 'none') {
+                        login();
+                    }
+                }
+            });
             
             // Actualizar contador de canales
             updateChannelCount();
@@ -870,12 +1032,15 @@
                 errorBox.style.display = 'block';
                 
                 // Efecto de vibración en los inputs
-                document.getElementById('username').style.animation = 'shake 0.5s';
-                document.getElementById('password').style.animation = 'shake 0.5s';
+                const usernameInput = document.getElementById('username');
+                const passwordInput = document.getElementById('password');
+                
+                usernameInput.style.animation = 'shake 0.5s';
+                passwordInput.style.animation = 'shake 0.5s';
                 
                 setTimeout(() => {
-                    document.getElementById('username').style.animation = '';
-                    document.getElementById('password').style.animation = '';
+                    usernameInput.style.animation = '';
+                    passwordInput.style.animation = '';
                 }, 500);
             }
         }
@@ -885,9 +1050,10 @@
             const container = document.getElementById('channels-container');
             container.innerHTML = '';
             
-            CHANNELS_DB.forEach(category => {
+            CHANNELS_DB.forEach((category, catIndex) => {
                 const channelCard = document.createElement('div');
                 channelCard.className = 'channel-card';
+                channelCard.dataset.category = catIndex;
                 
                 channelCard.innerHTML = `
                     <div class="channel-header">
@@ -895,12 +1061,12 @@
                         <span class="channel-count">${category.links.length} streams</span>
                     </div>
                     <div class="channel-links">
-                        ${category.links.map(link => `
-                            <a href="#" class="stream-link" onclick="handleStreamClick('${link.url}', '${link.name}')">
+                        ${category.links.map((link, linkIndex) => `
+                            <a href="#" class="stream-link" onclick="showStreamModal('${link.id}', '${link.name}', '${link.type}')">
                                 <i class="fas fa-play-circle"></i>
                                 <div class="link-info">
                                     <div class="link-name">${link.name}</div>
-                                    <div class="link-type">${link.type} • AceStream</div>
+                                    <div class="link-type">${link.type} • ID: ${link.id.substring(0, 8)}...</div>
                                 </div>
                                 <div class="link-play">
                                     <i class="fas fa-external-link-alt"></i>
@@ -916,18 +1082,92 @@
             updateChannelCount();
         }
 
-        // Manejar clic en stream
-        function handleStreamClick(url, name) {
-            // Mostrar opciones
-            const openInPlayer = confirm(`¿Abrir "${name}" en reproductor AceStream?\n\nURL: ${url.substring(0, 50)}...\n\nAceptar para abrir en reproductor, Cancelar para copiar enlace.`);
+        // Mostrar modal para stream
+        function showStreamModal(id, name, type) {
+            currentModalId = id;
             
-            if (openInPlayer) {
-                // Abrir en reproductor (puede requerir protocol handler)
-                window.location.href = url;
-            } else {
-                // Copiar al portapapeles
-                copyToClipboard(url);
-                showCopyFeedback(`Enlace copiado: ${name}`);
+            // Crear modal
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.id = 'stream-modal';
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            };
+            
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-stream"></i> ${name}</h3>
+                        <p style="color: #aaa; margin-top: 5px;">${type} • AceStream ID</p>
+                    </div>
+                    
+                    <div class="id-display">
+                        ${id}
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button class="modal-btn btn-open" onclick="openAceStream()">
+                            <i class="fas fa-play"></i> Abrir en AceStream
+                        </button>
+                        <button class="modal-btn btn-copy" onclick="copyAceStreamId()">
+                            <i class="fas fa-copy"></i> Copiar ID
+                        </button>
+                    </div>
+                    
+                    <button class="btn-close" onclick="closeModal()">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Evitar scroll en el fondo
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Abrir en AceStream
+        function openAceStream() {
+            if (!currentModalId) return;
+            
+            const fullUrl = `acestream://${currentModalId}`;
+            
+            // Intentar abrir en AceStream
+            window.location.href = fullUrl;
+            
+            // Feedback al usuario
+            showCopyFeedback(`Abriendo stream en AceStream...`, false);
+            
+            // Cerrar modal después de un breve retardo
+            setTimeout(() => {
+                closeModal();
+            }, 1000);
+        }
+
+        // Copiar ID de AceStream
+        function copyAceStreamId() {
+            if (!currentModalId) return;
+            
+            copyToClipboard(currentModalId);
+            showCopyFeedback(`ID copiado: ${currentModalId.substring(0, 12)}...`);
+            
+            // Cerrar modal después de copiar
+            setTimeout(() => {
+                closeModal();
+            }, 1500);
+        }
+
+        // Cerrar modal
+        function closeModal() {
+            const modal = document.getElementById('stream-modal');
+            if (modal) {
+                modal.remove();
+                currentModalId = null;
+                
+                // Restaurar scroll
+                document.body.style.overflow = '';
             }
         }
 
@@ -937,20 +1177,27 @@
             textArea.value = text;
             document.body.appendChild(textArea);
             textArea.select();
-            document.execCommand('copy');
+            
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                console.error('Error al copiar al portapapeles:', err);
+            }
+            
             document.body.removeChild(textArea);
         }
 
         // Mostrar feedback de copia
         function showCopyFeedback(message, isCopy = true) {
             const feedback = document.getElementById('copy-feedback');
+            const feedbackText = document.getElementById('feedback-text');
+            
+            feedbackText.textContent = message;
             
             if (isCopy) {
-                feedback.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
                 feedback.style.background = 'var(--neon-green)';
                 feedback.style.color = '#000';
             } else {
-                feedback.innerHTML = `<i class="fas fa-user-check"></i> ${message}`;
                 feedback.style.background = 'var(--neon-blue)';
                 feedback.style.color = '#000';
             }
@@ -971,12 +1218,16 @@
                 // Mostrar todos los canales
                 channelCards.forEach(card => {
                     card.style.display = 'flex';
+                    // Mostrar todos los enlaces dentro de la tarjeta
+                    const links = card.querySelectorAll('.stream-link');
+                    links.forEach(link => {
+                        link.style.display = 'flex';
+                    });
                 });
                 return;
             }
             
             channelCards.forEach(card => {
-                const cardText = card.textContent.toLowerCase();
                 const links = card.querySelectorAll('.stream-link');
                 let hasMatch = false;
                 
@@ -992,11 +1243,7 @@
                 });
                 
                 // Mostrar/ocultar tarjeta según coincidencias
-                if (hasMatch) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
+                card.style.display = hasMatch ? 'flex' : 'none';
             });
         }
 
@@ -1016,26 +1263,6 @@
                 location.reload();
             }
         }
-
-        // Permitir login con Enter
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                if (document.getElementById('auth-section').style.display !== 'none') {
-                    login();
-                }
-            }
-        });
-
-        // Agregar efecto de shake para errores
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-                20%, 40%, 60%, 80% { transform: translateX(5px); }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
